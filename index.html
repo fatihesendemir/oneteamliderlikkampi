@@ -127,6 +127,9 @@ h1{
 .it.quiet .card{background:transparent;border:0;padding:4px 0 4px 12px}
 .it.quiet h3{font-size:15px;font-weight:500;color:var(--muted);letter-spacing:.02em}
 .it.meal h3{color:var(--text)}
+.divider{position:relative;margin:16px 0 4px;padding-left:88px}
+.divider span{display:inline-block;font-family:var(--display);font-weight:600;font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);background:linear-gradient(180deg,#E7C882,#B8913F);padding:5px 12px;border-radius:999px}
+@media (max-width:420px){.divider{padding-left:66px}}
 .it.meal .tag{color:var(--muted)}
 
 /* live */
@@ -202,13 +205,14 @@ const DAYS=[
   {s:"08:00",e:"09:20",t:"Kahvaltı",q:1,meal:1},
   {s:"09:20",e:"09:30",t:"Hediye Çekilişi"},
   {s:"09:30",e:"09:40",t:"Açılış",m:"Dyt. Beste Alimert Altunörs"},
-  {s:"09:45",e:"10:00",t:"Nitro Plus",tag:"Ürün",m:"Doç. Dr. Eczacı Kayhan Bolelli"},
-  {s:"10:00",e:"10:15",t:"Sunrise",tag:"Ürün",m:"Dyt. Çağla Abanoz"},
-  {s:"10:15",e:"10:30",t:"Sunset",tag:"Ürün",m:"Uzm. Dr. Derya Güneş"},
-  {s:"10:30",e:"10:45",t:"Mentabiotics",tag:"Ürün",m:"Uzm. Dr. F. Betül Alpay"},
-  {s:"10:45",e:"11:00",t:"HL5 – On Shots",tag:"Ürün",m:"Dr. Tülin Kafes Pişirici"},
-  {s:"11:00",e:"11:15",t:"Edge – Energy",tag:"Ürün",m:"Dyt. Burcu Dilek Demir"},
-  {s:"11:15",e:"11:30",t:"Bilimsel Çalışmalar",m:"Uzm. Dr. Şenay Çitim"},
+  {div:"Ürün Anlatımları"},
+  {s:"09:45",e:"10:00",t:"Nitro Plus",sp:"Doç. Dr. Eczacı Kayhan Bolelli"},
+  {s:"10:00",e:"10:15",t:"Sunrise",sp:"Dyt. Çağla Abanoz"},
+  {s:"10:15",e:"10:30",t:"Sunset",sp:"Uzm. Dr. Derya Güneş"},
+  {s:"10:30",e:"10:45",t:"Mentabiotics",sp:"Uzm. Dr. F. Betül Alpay"},
+  {s:"10:45",e:"11:00",t:"HL5 – On Shots",sp:"Dr. Tülin Kafes Pişirici"},
+  {s:"11:00",e:"11:15",t:"Edge – Energy",sp:"Dyt. Burcu Dilek Demir"},
+  {s:"11:15",e:"11:30",t:"Bilimsel Çalışmalar",sp:"Uzm. Dr. Şenay Çitim"},
   {s:"11:30",e:"12:00",t:"Amare Ürünleri Tecrübe Paylaşımları"},
   {s:"12:00",e:"14:00",t:"Öğle Yemeği",q:1,meal:1},
   {s:"14:00",e:"15:15",par:[
@@ -265,6 +269,7 @@ function render(i){
   const day=DAYS[i], now=istanbulNow(), isToday=now.date===day.date;
   document.querySelectorAll(".tab").forEach((b,k)=>b.setAttribute("aria-selected",k===i?"true":"false"));
   const rows=day.items.map(o=>{
+    if(o.div)return `<li class="divider"><span>${esc(o.div)}</span></li>`;
     let e=mins(o.e); if(e===0)e=1440;
     const live=isToday && now.min>=mins(o.s) && now.min<e;
     const cls=["it",o.q?"quiet":"",o.meal?"meal":"",o.f?"feature":"",live?"now":""].join(" ");
